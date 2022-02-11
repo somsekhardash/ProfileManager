@@ -1,12 +1,6 @@
 import React from 'react';
 import { fakeAuthProvider } from "./Auth";
 
-interface AuthContextType {
-    user: any;
-    signin: (user: string, callback: VoidFunction) => void;
-    signout: (callback: VoidFunction) => void;
-}
-
 let AuthContext = React.createContext<AuthContextType>(null!);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
