@@ -3,13 +3,12 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import logo from './logo.svg';
 import './App.css';
-import { AuthProvider } from './AuthProvider';
+import { AuthProvider } from './Auth/AuthProvider';
 import { Layout } from './Layout';
 import { PublicPage } from './PublicPage';
 import { LoginPage } from './LoginPage'; 
-import {RequireAuth} from './RequireAuth';
+import {RequireAuth} from './Auth/RequireAuth';
 import { ProtectedPage } from './ProtectedPage';
 
 function App() {

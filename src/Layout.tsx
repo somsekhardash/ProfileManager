@@ -5,7 +5,7 @@ import {
   Outlet
 } from "react-router-dom";
 
-import {AuthContext} from './AuthProvider';
+import {AuthContext} from './Auth/AuthProvider';
 
 function useAuth() {
     return React.useContext(AuthContext);
@@ -30,7 +30,7 @@ function Layout() {
 
 
 function AuthStatus() {
-    let auth = useAuth();
+    let auth: any = useAuth();
     let navigate = useNavigate();
   
     if (!auth.user) {
