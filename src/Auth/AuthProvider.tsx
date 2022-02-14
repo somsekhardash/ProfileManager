@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { fakeAuthProvider } from "./Auth";
 import { UserAuthenticationClient , setCookie, removeCookie } from '../Helper/Cookieshelper';
 import axios from "axios";
+import { REACT_APP_LOGIN_USER, REACT_APP_VERIFY_USER, REACT_APP_LOGOUT_USER ,REACT_APP_COOKIE1, REACT_APP_COOKIE2, REACT_APP_LOGIN_REDIRECT_URL, REACT_APP_MEMBERSHIP_REDIRECT_URL} from './../config';
 
 let AuthContext = React.createContext<AuthContextType>(null!);
 
@@ -11,14 +12,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   let [loading, setLoading] = React.useState<any>(null);
 
   const verifyUser = async (token: string) => {
-    console.log(token);
     try {
       setLoading(true);
       await axios.post(
-        "http://localhost:8000/verify",
+        REACT_APP_VERIFY_USER as string,
         {"token": token}
       ).then(res => {
-        console.log(`${res.data.data.userName} userName`);
         setUser(res.data.data.userName);
       });
     } catch (err) {
@@ -32,11 +31,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       await axios.post(
-                  "http://localhost:8000/login-user",
+                  REACT_APP_LOGIN_USER as string,
                   {"userName": userName} )
                 .then(res => {
                   setCookie("internal_token", res.data.data.token, 1);
-                  setUser(res.data.data.userName);
+                  console.log();
+                  setUser(UserAuthenticationClient.getDecodedToken(res.data.data.token).userName || "test_user@condenast.com");
                 })
     }catch (err) {
         setError("Unexpected Error on loginUser Flow!");
@@ -49,7 +49,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true);
       await axios.post(
-                  "http://localhost:8000/logout-user",
+                  REACT_APP_LOGOUT_USER as string,
                   {"token": token} )
                 .then(res => {
                   removeCookie("internal_token");
@@ -62,18 +62,24 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  // "username" - existing one
-  // "internal_token" - new one we are creating 
-
   useEffect(() => {
-    if(UserAuthenticationClient.getDocumentCookie("username")) {
-      if(UserAuthenticationClient.getDocumentCookie("internal_token")) { 
-        verifyUser(UserAuthenticationClient.getDocumentCookie("internal_token"));
+    const authCookie = UserAuthenticationClient.getDocumentCookie(`${REACT_APP_COOKIE1}`);
+    const subCookie = UserAuthenticationClient.getDocumentCookie(`${REACT_APP_COOKIE2}`);
+    const internalCookie = UserAuthenticationClient.getDocumentCookie("internal_token");
+    if(authCookie) {
+      if(subCookie) {
+        if(internalCookie) { 
+          verifyUser(internalCookie);
+        } else {
+          loginUser(authCookie);
+        }
       } else {
-        loginUser(UserAuthenticationClient.getDocumentCookie("username"));
+        // window.location.replace(`${REACT_APP_MEMBERSHIP_REDIRECT_URL}`);
+        alert("redirect to membership");
       }
     } else {
-      alert("No User InfoFound Please Set The User");
+      // window.location.replace(`${REACT_APP_LOGIN_REDIRECT_URL}`);
+      alert("redirect to loginpage");
     }
   }, []);
   

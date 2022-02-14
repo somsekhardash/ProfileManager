@@ -3,7 +3,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import './App.css';
+import './App.scss';
 import { AuthProvider } from './Auth/AuthProvider';
 import { Layout } from './Layout';
 import { PublicPage } from './PublicPage';
@@ -29,7 +29,6 @@ function App() {
           />
         </Route>
       </Routes>
-    
     </AuthProvider>
   );
 }

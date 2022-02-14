@@ -25,6 +25,11 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <link
+    async
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/semantic-ui@2/dist/semantic.min.css"
+    />
     <style>
       .footer{
         position: absolute;
@@ -45,37 +50,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <div class="footer">
-      <input type="text" class="userName" />
-      <button class="userCookie">CreateUser</button>
-      <button class="adminCookie">SetAdmin</button>
-      <button class="clearCookies">ClearUser</button>
-    </div>
-    <script>
-      (function(){
-        function setCookie(cname, cvalue, exdays) {
-          const d = new Date();
-          d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-          let expires = "expires="+d.toUTCString();
-          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-
-        document.querySelector('.userCookie').addEventListener('click', function(){
-          const userName = document.querySelector(".userName").value;
-            if(userName) setCookie("username", userName , 1); else alert('please enter username');
-            document.querySelector(".userName").value = '';
-        });
-
-        document.querySelector('.adminCookie').addEventListener('click', function(){
-          setCookie("username", 'Admin', 1);
-          document.querySelector(".userName").value = '';
-        });
-
-        document.querySelector('.clearCookies').addEventListener('click', function(){
-          document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-          document.querySelector(".userName").value = '';
-        });
-      }());
-    </script>
   </body>
 </html>
