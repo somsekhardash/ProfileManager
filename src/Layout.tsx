@@ -52,7 +52,7 @@ function Layout() {
                             </Segment>) : <Outlet />}
             </Container>
             </Segment>
-            <Segment inverted vertical style={{ padding: '5em 0em' }}>
+            {/* <Segment inverted vertical style={{ padding: '5em 0em' }}>
       <Container>
         <Grid divided inverted stackable>
           <Grid.Row>
@@ -85,7 +85,7 @@ function Layout() {
           </Grid.Row>
         </Grid>
       </Container>
-    </Segment>
+    </Segment> */}
         </div>)
 }
 

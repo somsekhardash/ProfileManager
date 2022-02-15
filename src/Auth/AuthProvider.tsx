@@ -126,11 +126,13 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } else {
         // window.location.replace(`${REACT_APP_MEMBERSHIP_REDIRECT_URL}`);
-        alert("redirect to membership");
+        window.location.assign(REACT_APP_MEMBERSHIP_REDIRECT_URL as string);
+        //alert("redirect to membership");
       }
     } else {
       // window.location.replace(`${REACT_APP_LOGIN_REDIRECT_URL}`);
-      alert("redirect to loginpage");
+      // alert("redirect to loginpage");
+      window.location.assign(REACT_APP_LOGIN_REDIRECT_URL as string);
     }
   }, []);
   

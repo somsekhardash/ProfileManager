@@ -13,6 +13,9 @@ const FormExampleFieldControlId = () => {
         "other": makeDropdownObject(["Architectural/Interior Photographer", "Organization Services", "Art Consultant", "Restoration Specialist","Stylist", "Sustainability Consultant"]) as DropdownItemProps[]
     }
     
+    const [disableAll, setDisableAll] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
     const [formValue, setFormValues] = useState({
         profile_name: '',
         company_name: '',
@@ -34,6 +37,11 @@ const FormExampleFieldControlId = () => {
             setFormValues({
                 ...applicationForm
             });
+
+        if(window.localStorage.getItem("isSubmitted")){
+            setDisableAll(true);
+            setIsSubmitted(true);
+        }    
     },[])
 
     const handleInputChange = (event: any, data: any) => {
@@ -76,7 +84,7 @@ const FormExampleFieldControlId = () => {
     const saveDraft = () => {
         window.localStorage.setItem('ApplicationForm', JSON.stringify(formValue));
     }
-
+    
     const clearData = () => {
         window.localStorage.removeItem('ApplicationForm');
         setFormValues({
@@ -95,6 +103,18 @@ const FormExampleFieldControlId = () => {
         });
     }
     
+
+    const saveApplication = () => {
+        window.localStorage.setItem('ApplicationForm', JSON.stringify(formValue));
+        window.localStorage.setItem('isSubmitted', "true");
+
+        if(true) {
+            setDisableAll(true);
+            setIsSubmitted(true);
+        }
+
+    }
+
   return <div>
         <Message
             attached
@@ -112,9 +132,10 @@ const FormExampleFieldControlId = () => {
                 ribbon: true,
                 }}
                 size='medium'
+                disabled = {disableAll}
                 src={formValue.image_sl || 'https://react.semantic-ui.com/images/wireframe/image.png'}
             />
-        <Input type="file" name="myImage" hidden onChange={onImageChange} accept="image/png, image/jpeg"/>
+        {!isSubmitted && <Input type="file" name="myImage" hidden onChange={onImageChange} accept="image/png, image/jpeg"/>}
         </Form.Group>
         <Form.Group widths='equal'>
             <Form.Field
@@ -124,6 +145,7 @@ const FormExampleFieldControlId = () => {
                 name="profile_name"
                 placeholder='Profile Name'
                 value={formValue.profile_name}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             />
             <Form.Field
@@ -133,6 +155,7 @@ const FormExampleFieldControlId = () => {
                 name="company_name"
                 placeholder='Company Name'
                 value={formValue.company_name}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             />
         </Form.Group>
@@ -145,6 +168,7 @@ const FormExampleFieldControlId = () => {
                 placeholder='Category'
                 name="category"
                 onChange={handleSelectChange}
+                disabled = {disableAll}
                 value={formValue.category}
             />
 
@@ -156,6 +180,7 @@ const FormExampleFieldControlId = () => {
                 placeholder='Please Select'
                 name="profession"
                 onChange={handleSelectChange}
+                disabled = {disableAll}
                 value={formValue.profession}
             />} 
         </Form.Group>
@@ -167,6 +192,7 @@ const FormExampleFieldControlId = () => {
                 name="email"
                 placeholder='Email'
                 value={formValue.email}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             />
 
@@ -177,6 +203,7 @@ const FormExampleFieldControlId = () => {
                 name="phone_number"
                 placeholder='Phone Number'
                 value={formValue.phone_number}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             />
 
@@ -190,6 +217,7 @@ const FormExampleFieldControlId = () => {
                 name="social_media_profile"
                 placeholder='Social Media Profile'
                 value={formValue.social_media_profile}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             />
              <Form.Field
@@ -199,6 +227,7 @@ const FormExampleFieldControlId = () => {
                 name="website"
                 placeholder='Website'
                 value={formValue.website}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             /> 
                 
@@ -211,6 +240,7 @@ const FormExampleFieldControlId = () => {
                 name="profile_tagline"
                 placeholder='Profile Tagline'
                 value={formValue.profile_tagline}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             /> 
 
@@ -221,6 +251,7 @@ const FormExampleFieldControlId = () => {
                 name="bio"
                 placeholder='Bio'
                 value={formValue.bio}
+                disabled = {disableAll}
                 onChange={handleInputChange}
             /> 
      </Form.Group>
@@ -230,18 +261,20 @@ const FormExampleFieldControlId = () => {
             label='Willing to travel' 
             name="willing_to_travel" 
             checked={formValue.willing_to_travel} 
+            disabled = {disableAll}
             onChange={handleCheckboxChange}
         />
     </Form.Field>
 
-    <Button primary type='submit'>Submit</Button>
+    {!isSubmitted && <><Button primary type='submit'  onClick={saveApplication}>Submit</Button>
     <Button color='orange' onClick={clearData}>ClearData</Button>
-    <Button secondary type='submit' onClick={saveDraft}>Save Draft</Button>
+    <Button secondary type='submit' onClick={saveDraft}>Save Draft</Button></>}
+
   </Form>
-    <Message attached='bottom' warning>
+    {isSubmitted && <Message attached='bottom' warning>
       <Icon name='help' />
-      Already signed up?&nbsp;<a href='#'>Login here</a>&nbsp;instead.
-    </Message>
+        Your Application is Under Review Please Wait
+    </Message>}
   </div>
 }
 
