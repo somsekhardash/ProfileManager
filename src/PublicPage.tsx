@@ -1,5 +1,5 @@
 function PublicPage() {
-    return <h3>This is a Public Page</h3>;
+    return <div>Public PAGE</div>    
 }
 
 export { PublicPage }

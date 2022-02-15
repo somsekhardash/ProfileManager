@@ -37,7 +37,7 @@
 // export {getDocumentCookie}
 
 interface DecodedToken {
-  userName?: string;
+  email?: string;
   exp: number;
   iat?: number;
 }
@@ -84,7 +84,7 @@ class UserAuthenticationClient {
       return JSON.parse(window.atob(payload));
     } catch (e) {
       return {
-        userName: '',
+        email: '',
         exp: 0,
         iat: 0
       };
