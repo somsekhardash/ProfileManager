@@ -17,10 +17,10 @@ function App() {
       <h4>My Dashboard</h4>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<PublicPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/" element={<PublicPage />} />
+          <Route path="/login" element={<LoginPage />} /> */}
           <Route
-            path="/protected"
+            path="/"
             element={
               <RequireAuth>
                 <ProtectedPage />

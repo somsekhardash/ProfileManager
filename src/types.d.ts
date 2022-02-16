@@ -1,6 +1,4 @@
 
 interface AuthContextType {
-    user: any;
-    signin: (user: string, callback: VoidFunction) => void;
-    signout: (callback: VoidFunction) => void;
+    user, loading, error, signout, setLoader, setErr
 }

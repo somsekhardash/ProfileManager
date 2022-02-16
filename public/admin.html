@@ -8,14 +8,27 @@
 </head>
 <body>
     <div class="data">
-        <button class="user-cookie">SetUser</button>
+        <!-- <button class="user-cookie">SetUser</button> -->
         <button class="member-cookie">SetMembership</button>
         <button class="admin-cookie">SetAdmin</button>
         <button class="clear-cookies">ClearUser</button>
         <button class="clear-membership">ClearMembership</button>
+
+        <div class="designers">
+
+        </div>
     </div>
     <script>
         (function(){
+          const user = {
+            "user1": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjQ2NjA3YTFkYjVkNGRjODhhNjZiZmI2NjYxNjcwNGE3OWRhZGI5YmY1ZmQ0NTkyNjFmODY3N2M5ZmNiMzJiYTYifQ.eyJzdWIiOiJkODk2YTYzYi1mNWJjLTQ2ZDQtOGI2ZS1iMjIyZGEzMjIyMjIiLCJ4aWQiOiIwYWY5ZWU1NC0wMzY5LTRjMzYtODQwNi0xNDFhZTQ2MzIyMjIiLCJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsImF0X2hhc2giOiJPdlNQcGNjSW85NmllVmRrc3poQUFBIiwiYXVkIjoiY29uZGVuYXN0LmlkZW50aXR5LjAxZjc0MDdkMzAyNTIzZGRkYzM2MjJmYzY4NWVhYWEiLCJleHAiOjE2NDYwMzc2NjEsImlhdCI6MTY0NDgyODA2MSwiaXNzIjoiaHR0cHM6Ly9pZC5jb25kZW5hc3QuY29tIn0.T0NlfnEGBdgLMiHi3ylyng0t4_zdYcioSd4tCDeNOcqjay5E5lQGiyFosxpsHJucLYIcMc7zL3tLJZC5ssqSag",
+            "user2": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjQ2NjA3YTFkYjVkNGRjODhhNjZiZmI2NjYxNjcwNGE3OWRhZGI5YmY1ZmQ0NTkyNjFmODY3N2M5ZmNiMzJiYTYifQ.eyJzdWIiOiJkODk2YTYzYi1mNWJjLTQ2ZDQtOGI2ZS1iMjIyZGEzMjIyMjIiLCJ4aWQiOiIwYWY5ZWU1NC0wMzY5LTRjMzYtODQwNi0xNDFhZTQ2MzIyMjIiLCJlbWFpbCI6InVzZXIyQGdtYWlsLmNvbSIsImF0X2hhc2giOiJPdlNQcGNjSW85NmllVmRrc3poQUFBIiwiYXVkIjoiY29uZGVuYXN0LmlkZW50aXR5LjAxZjc0MDdkMzAyNTIzZGRkYzM2MjJmYzY4NWVhYWEiLCJleHAiOjE2NDYwMzc2NjEsImlhdCI6MTY0NDgyODA2MSwiaXNzIjoiaHR0cHM6Ly9pZC5jb25kZW5hc3QuY29tIn0.F8F67DgkLyx-tiRDow12jEqNKXD7PMvus3Zk6R3gGlJFhcbR6K_jhS4NaZ-dY9FIDWqALDjz7AeQxCA0sYM7dA",
+            "user3": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjQ2NjA3YTFkYjVkNGRjODhhNjZiZmI2NjYxNjcwNGE3OWRhZGI5YmY1ZmQ0NTkyNjFmODY3N2M5ZmNiMzJiYTYifQ.eyJzdWIiOiJkODk2YTYzYi1mNWJjLTQ2ZDQtOGI2ZS1iMjIyZGEzMjIyMjIiLCJ4aWQiOiIwYWY5ZWU1NC0wMzY5LTRjMzYtODQwNi0xNDFhZTQ2MzIyMjIiLCJlbWFpbCI6InVzZXIzQGdtYWlsLmNvbSIsImF0X2hhc2giOiJPdlNQcGNjSW85NmllVmRrc3poQUFBIiwiYXVkIjoiY29uZGVuYXN0LmlkZW50aXR5LjAxZjc0MDdkMzAyNTIzZGRkYzM2MjJmYzY4NWVhYWEiLCJleHAiOjE2NDYwMzc2NjEsImlhdCI6MTY0NDgyODA2MSwiaXNzIjoiaHR0cHM6Ly9pZC5jb25kZW5hc3QuY29tIn0.9O19ky3nVd-6_zgdiQbBjW4pFq_1OiwsAP81uveI_WRo9cSBZaXoj5FSYndLPnQ73TAbRxNVGoIw0dIeWMlsZQ",
+            "user4": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjQ2NjA3YTFkYjVkNGRjODhhNjZiZmI2NjYxNjcwNGE3OWRhZGI5YmY1ZmQ0NTkyNjFmODY3N2M5ZmNiMzJiYTYifQ.eyJzdWIiOiJkODk2YTYzYi1mNWJjLTQ2ZDQtOGI2ZS1iMjIyZGEzMjIyMjIiLCJ4aWQiOiIwYWY5ZWU1NC0wMzY5LTRjMzYtODQwNi0xNDFhZTQ2MzIyMjIiLCJlbWFpbCI6InVzZXI0QGdtYWlsLmNvbSIsImF0X2hhc2giOiJPdlNQcGNjSW85NmllVmRrc3poQUFBIiwiYXVkIjoiY29uZGVuYXN0LmlkZW50aXR5LjAxZjc0MDdkMzAyNTIzZGRkYzM2MjJmYzY4NWVhYWEiLCJleHAiOjE2NDYwMzc2NjEsImlhdCI6MTY0NDgyODA2MSwiaXNzIjoiaHR0cHM6Ly9pZC5jb25kZW5hc3QuY29tIn0.HRDYuq2Ys2e75Y7TinJWicDklad_dSwSyFYbJgvFaU_fgSDuIYBVMnfppAya-UhaOiNlotUp9KlL6oUeZGA3yw",
+            "user5": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjQ2NjA3YTFkYjVkNGRjODhhNjZiZmI2NjYxNjcwNGE3OWRhZGI5YmY1ZmQ0NTkyNjFmODY3N2M5ZmNiMzJiYTYifQ.eyJzdWIiOiJkODk2YTYzYi1mNWJjLTQ2ZDQtOGI2ZS1iMjIyZGEzMjIyMjIiLCJ4aWQiOiIwYWY5ZWU1NC0wMzY5LTRjMzYtODQwNi0xNDFhZTQ2MzIyMjIiLCJlbWFpbCI6InVzZXI1QGdtYWlsLmNvbSIsImF0X2hhc2giOiJPdlNQcGNjSW85NmllVmRrc3poQUFBIiwiYXVkIjoiY29uZGVuYXN0LmlkZW50aXR5LjAxZjc0MDdkMzAyNTIzZGRkYzM2MjJmYzY4NWVhYWEiLCJleHAiOjE2NDYwMzc2NjEsImlhdCI6MTY0NDgyODA2MSwiaXNzIjoiaHR0cHM6Ly9pZC5jb25kZW5hc3QuY29tIn0.7832DkUr0CqSe5egnOJ2Xp2jluvtKQlwpV7GeSRMtY7FQm2JUOvjVc-v-s_U0VXTJ-5fphxIuFxkZskmHzDeHw"
+          }
+
+
           const pay_ent_pass = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsInZlciI6MX0.eyJzY29wZXMiOiBbImFkLXBybyJdLCJleHAiOjIwMjIwMzE2fQ.QNMbTBydgUahLmk";
           const CN_token_id = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjQ2NjA3YTFkYjVkNGRjODhhNjZiZmI2NjYxNjcwNGE3OWRhZGI5YmY1ZmQ0NTkyNjFmODY3N2M5ZmNiMzJiYTYifQ.eyJzdWIiOiJkODk2YTYzYi1mNWJjLTQ2ZDQtOGI2ZS1iMjIyZGEzNzc3NzciLCJ4aWQiOiIwYWY5ZWU1NC0wMzY5LTRjMzYtODQwNi0xNDFhZTQ2Mzc3NzciLCJlbWFpbCI6InRlc3RfdXNlckBjb25kZW5hc3QuY29tIiwiYXRfaGFzaCI6Ik92U1BwY2NJbzk2aWVWZGtzemhBQUEiLCJhdWQiOiJjb25kZW5hc3QuaWRlbnRpdHkuMDFmNzQwN2QzMDI1MjNkZGRjMzYyMmZjNjg1ZWJiYmIiLCJleHAiOjE2NDYwMzc2NjEsImlhdCI6MTY0NDgyODA2MSwiaXNzIjoiaHR0cHM6Ly9pZC5jb25kZW5hc3QuY29tIn0.bcQzbRMlpMJItC2K56BPeepSgz006QdJUVTlzTse_7gKhh2Mc9p-LrlaWQZDXa4WzyyLslutQ0_bKguogGKq4w";  
           const Admin_CN_id = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCIsImtpZCI6IjQ2NjA3YTFkYjVkNGRjODhhNjZiZmI2NjYxNjcwNGE3OWRhZGI5YmY1ZmQ0NTkyNjFmODY3N2M5ZmNiMzJiYTYifQ.eyJzdWIiOiJkODk2YTYzYi1mNWJjLTQ2ZDQtOGI2ZS1iMjIyZGEzMjIyMjIiLCJ4aWQiOiIwYWY5ZWU1NC0wMzY5LTRjMzYtODQwNi0xNDFhZTQ2MzIyMjIiLCJlbWFpbCI6ImFkbWluQGNvbmRlbmFzdC5jb20iLCJhdF9oYXNoIjoiT3ZTUHBjY0lvOTZpZVZka3N6aEFBQSIsImF1ZCI6ImNvbmRlbmFzdC5pZGVudGl0eS4wMWY3NDA3ZDMwMjUyM2RkZGMzNjIyZmM2ODVlYWFhIiwiZXhwIjoxNjQ2MDM3NjYxLCJpYXQiOjE2NDQ4MjgwNjEsImlzcyI6Imh0dHBzOi8vaWQuY29uZGVuYXN0LmNvbSJ9.BLpLyVqJ_x6bleRFYIU3jgpwJ-P-Y-ZODAFsaOAnD7zphAayj4bRdHsqK14hrpUNVTShp-8wkADCMIVHZN8ETA";
@@ -26,15 +39,44 @@
             let expires = "expires="+d.toUTCString();
             document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
           }
-  
-          document.querySelector('.user-cookie').addEventListener('click', function(){
-            setCookie("CN_token_id", CN_token_id , 1);
-          });
 
-          document.querySelector('.admin-cookie').addEventListener('click', function(){
-            setCookie("CN_token_id", Admin_CN_id , 1);
+          let designers = Object.keys(user);
+          if(designers.length) {
+            var data = designers.map(element => {
+              return `<button class="designer-button" data-ele=${element}>${element}</button>`
+            }); 
+            document.querySelector('.designers').innerHTML = data;
+          } 
+
+          document.addEventListener('click',function(e){
+              if(e.target && e.target.className== 'designer-button'){
+                  var data = e.target.dataset.ele;
+                  setCookie("CN_token_id", user[data] , 1);
+              }
           });
-  
+          
+
+          // document.querySelector('.user-cookie').addEventListener('click', function(){
+          //   const userEmail = document.querySelector('.user-input').value;
+          //   let data = {
+          //     "sub": "d896a63b-f5bc-46d4-8b6e-b222da322222",
+          //     "xid": "0af9ee54-0369-4c36-8406-141ae4632222",
+          //     "email": "admin@condenast.com",
+          //     "at_hash": "OvSPpccIo96ieVdkszhAAA",
+          //     "aud": "condenast.identity.01f7407d302523dddc3622fc685eaaa",
+          //     "exp": 1646037661,
+          //     "iat": 1644828061,
+          //     "iss": "https://id.condenast.com"
+          //   };
+           
+          //   if(userEmail) data.email = userEmail;
+
+          //   let designers = JSON.parse(window.localStorage.getItem('designers'));
+          //   designers.push(data.email)
+          //   window.localStorage.setItem('designers', JSON.stringify(designers));
+          //   setCookie("CN_token_id", window.btoa(data) , 1);
+          // });
+
           document.querySelector('.member-cookie').addEventListener('click', function(){
             setCookie("pay_ent_pass", pay_ent_pass , 1);
           });

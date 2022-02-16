@@ -10,9 +10,6 @@ import { REACT_APP_COOKIE3 } from '../config';
 function RequireAuth({ children }: { children: JSX.Element }) {
     let auth = useAuth();
     let location = useLocation();
-    debugger;
-    console.log('---------------');
-    console.log(auth);
     const internalCookie = UserAuthenticationClient.getDocumentCookie(`${REACT_APP_COOKIE3}`);
 
     if (!internalCookie) {
@@ -20,7 +17,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
       // trying to go to when they were redirected. This allows us to send them
       // along to that page after they login, which is a nicer user experience
       // than dropping them off on the home page.
-      return <Navigate to="/login" state={{ from: location }} replace />;
+      return <Navigate to="/" state={{ from: location }} replace />;
     }
   
     return children;
