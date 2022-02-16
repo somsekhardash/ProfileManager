@@ -1,4 +1,3 @@
-
 interface AuthContextType {
-    user, loading, error, signout, setLoader, setErr
+    user, signout, userid, auth_role
 }

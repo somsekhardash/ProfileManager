@@ -8,8 +8,8 @@ import { UserAuthenticationClient } from '../Helper/Cookieshelper';
 import { REACT_APP_COOKIE3 } from '../config';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
-    let auth = useAuth();
-    let location = useLocation();
+    const auth = useAuth();
+    const location = useLocation();
     const internalCookie = UserAuthenticationClient.getDocumentCookie(`${REACT_APP_COOKIE3}`);
 
     if (!internalCookie) {

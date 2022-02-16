@@ -10,15 +10,15 @@ import { PublicPage } from './PublicPage';
 import { LoginPage } from './LoginPage'; 
 import {RequireAuth} from './Auth/RequireAuth';
 import { ProtectedPage } from './ProtectedPage';
+import { HttpProvider } from './Helper/HttpProvider';
 
 function App() {
   return (
+    <HttpProvider>
     <AuthProvider>
       <h4>My Dashboard</h4>
       <Routes>
         <Route element={<Layout />}>
-          {/* <Route path="/" element={<PublicPage />} />
-          <Route path="/login" element={<LoginPage />} /> */}
           <Route
             path="/"
             element={
@@ -30,6 +30,7 @@ function App() {
         </Route>
       </Routes>
     </AuthProvider>
+    </HttpProvider>
   );
 }
 

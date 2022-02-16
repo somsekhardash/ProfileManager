@@ -4,6 +4,7 @@ import {
     setCookie,
     removeCookie
 } from '../Helper/Cookieshelper';
+import { HttpContext } from '../Helper/HttpProvider';
 import {
     REACT_APP_GRAPHQL,
     REACT_APP_COOKIE1,
@@ -13,61 +14,51 @@ import {
     REACT_APP_COOKIE3
 } from './../config';
 
-let AuthContext = React.createContext<AuthContextType>(null!);
+const AuthContext = React.createContext<AuthContextType>(null!);
+
+function useHttp() {
+    return React.useContext(HttpContext);
+}
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-    let [user, setUser] = React.useState<any>({
-        email: '',
-        id: ''
-    });
-    let [error, setError] = React.useState<any>(null);
-    let [loading, setLoading] = React.useState<any>(null);
-
-    const verifyUser = async (token: string) => {
-        try {
-            if (REACT_APP_GRAPHQL) {
-                setLoading(true);
-                const requestBody = {
-                    query: `query {
-            validate(validateInput:{
-              token: "${token}"
-          }){
-            _id,
-            email,
-            exp,
-            auth_role,
-            scope
-            }
-          }
-          `
-                };
-                fetch(REACT_APP_GRAPHQL as string, {
-                    method: 'POST',
-                    body: JSON.stringify(requestBody),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then((res) => res.json())
-                    .then((res: any) => {
-                        if (res.errors) {
-                            setError(res.errors[0].message);
-                        } else {
-                            const data = res.data.validate;
-                            setUser({
-                                email: data.email,
-                                id: data._id
-                            });
+    const userHttp = useHttp();
+    const [user, setUser] = React.useState<any>(null);
+    const [userid, setUserid] = React.useState<any>(null);
+    const [auth_role, setAuthRole] = React.useState<any>(null);
+    const verifyUser = async (token: any) => {
+        const requestBody = {
+            query: `query {
+                        validate(validateInput:{
+                        token: "${token}"
+                    }){
+                        _id,
+                        email,
+                        exp,
+                        auth_role,
+                        scope
                         }
-                    });
-            } else {
-                setError('REACT_APP_GRAPHQL Not There.');
+                    }`
+        };
+        userHttp.makeTheCall(
+            REACT_APP_GRAPHQL as string,
+            {
+                method: 'POST',
+                body: JSON.stringify(requestBody),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            },
+            (res: any) => {
+                if (res.errors) {
+                    userHttp.error = res.errors[0].message;
+                } else {
+                    const data = res.data.validate;
+                    setUser(data.email);
+                    setUserid(data._id);
+                    setAuthRole(data.auth_role);
+                }
             }
-        } catch (err) {
-            setError('Unexpected Error on Varification Flow!');
-        } finally {
-            setLoading(false);
-        }
+        );
     };
 
     const loginUser = async (authCookie: string, subCookie: string) => {
@@ -76,51 +67,43 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             console.log(subCookie);
 
             if (REACT_APP_GRAPHQL) {
-                setLoading(true);
                 const requestBody = {
                     query: `mutation {
-              login(loginInput: {
-                cn_token: "${authCookie}",
-                pay_ent_pass: "${subCookie}"
-              }), {
-                _id,
-                token,
-                email,
-                auth_role
-              }
-            }
-          `
+                            login(loginInput: {
+                                cn_token: "${authCookie}",
+                                pay_ent_pass: "${subCookie}"
+                            }), {
+                                _id,
+                                token,
+                                email,
+                                auth_role
+                            }
+                            }`
                 };
-                fetch(REACT_APP_GRAPHQL as string, {
-                    method: 'POST',
-                    body: JSON.stringify(requestBody),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then((res) => res.json())
-                    .then((res: any) => {
+
+                userHttp.makeTheCall(
+                    REACT_APP_GRAPHQL as string,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(requestBody),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    },
+                    (res: any) => {
                         if (res.errors) {
-                            setError(res.errors[0].message);
+                            userHttp.error = res.errors[0].message;
                         } else {
                             const data = res.data.login;
                             setCookie(`${REACT_APP_COOKIE3}`, data.token, 1);
-                            setUser({
-                                email: data.email,
-                                id: data._id
-                            });
+                            setUser(data.email);
+                            setUserid(data._id);
                         }
-                    })
-                    .catch((err) => {
-                        setError(err);
-                    });
-            } else {
-                setError('REACT_APP_GRAPHQL Not There.');
+                    }
+                );
             }
         } catch (err) {
-            setError('Unexpected Error on Login Flow!');
-        } finally {
-            setLoading(false);
+            userHttp.error = 'Unexpected Error on Login Flow!';
         }
     };
 
@@ -128,10 +111,11 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             removeCookie(`${REACT_APP_COOKIE3}`);
             setUser(null);
+            setUserid(null);
         } catch (err) {
-            setError('Unexpected Error on loginUser Flow!');
+            userHttp.error = 'Unexpected Error on loginUser Flow!';
         } finally {
-            setLoading(false);
+            userHttp.isLoading = false;
         }
     };
 
@@ -173,15 +157,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     //   });
     // };
 
-    let setLoader = (value: boolean) => {
-        setLoading(value);
-    };
-
-    let setErr = (value: string) => {
-        setError(value);
-    };
-
-    let signout = (callback: VoidFunction) => {
+    const signout = (callback: VoidFunction) => {
         logoutUser(
             UserAuthenticationClient.getDocumentCookie(`${REACT_APP_COOKIE3}`)
         );
@@ -192,10 +168,10 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     //     callback();
     // };
 
-    let value = { user, loading, error, signout, setLoader, setErr };
+    const value = { user, userid, signout, auth_role };
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
     );
 }
 
-export { AuthProvider, AuthContext };
+export { AuthProvider, AuthContext, useHttp };

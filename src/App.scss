@@ -44,3 +44,25 @@
     width: 92px !important;
   }
 }
+
+.admin-page{
+  width: auto;
+  height: 100vh;
+  background-color: red;
+  display: flex;
+  .side-panel{
+    width: 34%;
+    & > .cards{
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .result-panel {
+    width: 66%;
+    margin: 0 auto;
+  }
+}
+
+.application-form, .admin-page{
+  margin: 0 20%;
+}

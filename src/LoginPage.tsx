@@ -5,11 +5,11 @@ import {
   import { useAuth } from './Layout';
 
 function LoginPage() {
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation() as any;
-    let auth = useAuth();
+    const auth = useAuth();
   
-    let from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/";
   
     return (
       <div>

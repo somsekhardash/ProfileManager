@@ -10,10 +10,14 @@ import {
     Checkbox,
     Message
 } from 'semantic-ui-react';
+
 import { REACT_APP_GRAPHQL } from './config';
 import { makeDropdownObject } from './Helper/FormHelper';
+import { useHttp } from './Auth/AuthProvider';
 
-const FormExampleFieldControlId = ({ user, userid, setLoader}: any) => {
+const FormExampleFieldControlId = ({user , userid}: any) => {
+    const userHttp: any = useHttp();
+
     const categoryOptions = makeDropdownObject([
         'Architecture',
         'Interior Design and Decoration',
@@ -67,7 +71,7 @@ const FormExampleFieldControlId = ({ user, userid, setLoader}: any) => {
         social_media_profile: ''
     });
 
-    useEffect(() => {
+    useEffect(()=>{
         const applicationForm = window.localStorage.getItem('ApplicationForm')
             ? JSON.parse(window.localStorage.getItem('ApplicationForm') || '')
             : null;
@@ -75,10 +79,10 @@ const FormExampleFieldControlId = ({ user, userid, setLoader}: any) => {
             setFormValues({
                 ...applicationForm
             });
+    });
 
+    useEffect(() => {
         if (REACT_APP_GRAPHQL && userid) {
-            console.log(REACT_APP_GRAPHQL, userid);
-            // setLoader(true);
             const requestBody = {
                 query: `query {
                     fetchApplication(id:"${userid}"){
@@ -97,18 +101,19 @@ const FormExampleFieldControlId = ({ user, userid, setLoader}: any) => {
                     }
                 }`
             };
-           
-            fetch(REACT_APP_GRAPHQL as string, {
-                method: 'POST',
-                body: JSON.stringify(requestBody),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then((res) => res.json())
-                .then((res: any) => {
+
+            userHttp.makeTheCall(
+                REACT_APP_GRAPHQL as string,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(requestBody),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                },
+                (res: any) => {
                     if (res.errors) {
-                        // setErr(res.errors[0].message);
+                        userHttp.setErr(res.errors[0].message);
                     }
                     const data = res?.data?.fetchApplication;
                     if (data && !!res?.data?.fetchApplication) {
@@ -129,10 +134,9 @@ const FormExampleFieldControlId = ({ user, userid, setLoader}: any) => {
                         });
                         setDisableAll(true);
                         setIsSubmitted(true);
-                        setLoader(false);
-                        // setErr('');
                     }
-                });
+                }
+            );
         }
     }, [userid]);
 
@@ -235,12 +239,12 @@ const FormExampleFieldControlId = ({ user, userid, setLoader}: any) => {
                     window.localStorage.removeItem('ApplicationForm');
                     setDisableAll(true);
                     setIsSubmitted(true);
-                })
+                });
         }
     };
 
     return (
-        <div>
+        <div className='application-form'>
             <Message
                 attached
                 header="Welcome User!"
